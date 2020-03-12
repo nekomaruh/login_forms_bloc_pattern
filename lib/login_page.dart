@@ -128,7 +128,8 @@ class LoginPage extends StatelessWidget {
                 icon: Icon(Icons.alternate_email, color: Colors.deepPurple,),
                 labelText: 'Email',
                 hintText: 'johesteb@gmail.com',
-              counterText: snap.data
+              errorText: 'Not a valid Email'
+              //counterText: snap.data
             ),
             onChanged: bloc.changeEmail,
           ),
@@ -146,11 +147,13 @@ class LoginPage extends StatelessWidget {
           padding: EdgeInsets.only(left: 40, right: 45),
           child: TextField(
             keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
             decoration: InputDecoration(
                 icon: Icon(Icons.lock_outline, color: Colors.deepPurple,),
                 labelText: 'Password',
                 hintText: '******',
-              counterText: snap.data,
+              errorText: 'Not a valid password',
+              //counterText: snap.data,
             ),
             onChanged: bloc.changePassword,
             //onChanged: bloc.changePassword,
