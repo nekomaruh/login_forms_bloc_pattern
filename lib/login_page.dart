@@ -127,7 +127,8 @@ class LoginPage extends StatelessWidget {
             decoration: InputDecoration(
                 icon: Icon(Icons.alternate_email, color: Colors.deepPurple,),
                 labelText: 'Email',
-                hintText: 'johesteb@gmail.com'
+                hintText: 'johesteb@gmail.com',
+              counterText: snap.data
             ),
             onChanged: bloc.changeEmail,
           ),
@@ -137,16 +138,25 @@ class LoginPage extends StatelessWidget {
   }
 
   _createPassword(LoginBloc bloc) {
-    return Container(
-      padding: EdgeInsets.only(left: 40, right: 45),
-      child: TextField(
-        keyboardType: TextInputType.visiblePassword,
-        decoration: InputDecoration(
-            icon: Icon(Icons.lock_outline, color: Colors.deepPurple,),
-            labelText: 'Password',
-            hintText: '******'
-        ),
-      ),
+
+    return StreamBuilder(
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot snap){
+        return Container(
+          padding: EdgeInsets.only(left: 40, right: 45),
+          child: TextField(
+            keyboardType: TextInputType.visiblePassword,
+            decoration: InputDecoration(
+                icon: Icon(Icons.lock_outline, color: Colors.deepPurple,),
+                labelText: 'Password',
+                hintText: '******',
+              counterText: snap.data,
+            ),
+            onChanged: bloc.changePassword,
+            //onChanged: bloc.changePassword,
+          ),
+        );
+      },
     );
   }
 
