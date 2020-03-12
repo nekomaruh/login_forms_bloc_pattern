@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loginformsblocpattern/home_page.dart';
-import 'package:loginformsblocpattern/login_page.dart';
+import 'package:loginformsblocpattern/pages/home_page.dart';
+import 'package:loginformsblocpattern/pages/login_page.dart';
+import 'package:loginformsblocpattern/pages/product_page.dart';
 
 import 'provider.dart';
 
@@ -18,10 +19,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
         ),
-        initialRoute: 'login',
+        initialRoute: 'home',
         routes: {
           'login' : (_) => LoginPage(),
-          'home' :(_) => HomePage()
+          'home' :(_) => HomePage(),
+          'product' : (_) => ProductPage()
         },
       ),
     );
