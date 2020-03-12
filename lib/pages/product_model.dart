@@ -7,7 +7,7 @@ String productToJson(Product data) => json.encode(data.toJson());
 class Product {
   String id;
   String name;
-  int price;
+  double price;
   bool available;
   String imgUrl;
 

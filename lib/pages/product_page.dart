@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loginformsblocpattern/pages/product_model.dart';
 import 'package:loginformsblocpattern/utils.dart' as utils;
 
 class ProductPage extends StatefulWidget {
@@ -9,6 +10,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final formKey = GlobalKey<FormState>();
+  Product product = new Product();
 
   @override
   Widget build(BuildContext context) {
