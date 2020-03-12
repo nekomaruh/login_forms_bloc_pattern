@@ -1,6 +1,6 @@
 # loginformsblocpattern
 
-Login using block pattern with flutter.
+Login using block pattern and REST api with flutter.
 
 ![alt text](https://i.imgur.com/KmL16Ua.png)
 
