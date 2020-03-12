@@ -129,6 +129,7 @@ class LoginPage extends StatelessWidget {
                 labelText: 'Email',
                 hintText: 'johesteb@gmail.com'
             ),
+            onChanged: bloc.changeEmail,
           ),
         );
       },
