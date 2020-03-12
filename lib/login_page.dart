@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'provider.dart';
+
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -67,11 +69,13 @@ class LoginPage extends StatelessWidget {
   }
 
   _loginForm(BuildContext context) {
+    final bloc = Provider.of(context);
+
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           SafeArea(
-            child: Container(height: 180,),
+            child: Container(height: 200,),
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.85,
@@ -93,9 +97,9 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 Text('Log In', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 28),),
                 SizedBox(height: 30,),
-                _createEmail(),
+                _createEmail(bloc),
                 SizedBox(height: 30,),
-                _createPassword(),
+                _createPassword(bloc),
                 SizedBox(height: 50,),
                 _createButton(),
               ],
@@ -112,21 +116,26 @@ class LoginPage extends StatelessWidget {
 
   }
 
-  _createEmail() {
-    return Container(
-      padding: EdgeInsets.only(left: 40, right: 45),
-      child: TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          icon: Icon(Icons.alternate_email, color: Colors.deepPurple,),
-          labelText: 'Email',
-          hintText: 'johesteb@gmail.com'
-        ),
-      ),
+  _createEmail(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.emailStream,
+      builder: (BuildContext context, AsyncSnapshot snap){
+        return Container(
+          padding: EdgeInsets.only(left: 40, right: 45),
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+                icon: Icon(Icons.alternate_email, color: Colors.deepPurple,),
+                labelText: 'Email',
+                hintText: 'johesteb@gmail.com'
+            ),
+          ),
+        );
+      },
     );
   }
 
-  _createPassword() {
+  _createPassword(LoginBloc bloc) {
     return Container(
       padding: EdgeInsets.only(left: 40, right: 45),
       child: TextField(
