@@ -128,7 +128,7 @@ class LoginPage extends StatelessWidget {
                 icon: Icon(Icons.alternate_email, color: Colors.deepPurple,),
                 labelText: 'Email',
                 hintText: 'johesteb@gmail.com',
-              errorText: 'Not a valid Email'
+              errorText: snap.error
               //counterText: snap.data
             ),
             onChanged: bloc.changeEmail,
@@ -152,7 +152,7 @@ class LoginPage extends StatelessWidget {
                 icon: Icon(Icons.lock_outline, color: Colors.deepPurple,),
                 labelText: 'Password',
                 hintText: '******',
-              errorText: 'Not a valid password',
+              errorText: snap.error
               //counterText: snap.data,
             ),
             onChanged: bloc.changePassword,
