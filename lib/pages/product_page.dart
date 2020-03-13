@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loginformsblocpattern/pages/product_model.dart';
+import 'package:loginformsblocpattern/product_model.dart';
+import 'package:loginformsblocpattern/product_provider.dart';
 import 'package:loginformsblocpattern/utils.dart' as utils;
 
 class ProductPage extends StatefulWidget {
@@ -11,6 +12,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final formKey = GlobalKey<FormState>();
   Product product = new Product();
+  final productProvider = new ProductProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class _ProductPageState extends State<ProductPage> {
                 children: <Widget>[
                   _name(),
                   _price(),
+                  _available(),
                   _button(),
                 ],
               ),
@@ -51,10 +54,12 @@ class _ProductPageState extends State<ProductPage> {
 
   _name() {
     return TextFormField(
+      initialValue: "",
       decoration: InputDecoration(
         labelText: 'Product name',
       ),
       textCapitalization: TextCapitalization.sentences,
+      onSaved: (name) => product.name = name,
       validator: (name){
         return name.length < 3 ? 'Add product name' : null;
       },
@@ -63,10 +68,12 @@ class _ProductPageState extends State<ProductPage> {
 
   _price() {
     return TextFormField(
+      initialValue: '0',
       decoration: InputDecoration(
         labelText: '\$ Price',
       ),
       keyboardType: TextInputType.number,
+      onSaved: (price) => product.price = double.parse(price),
       validator: (price){
         return utils.isNumeric(price) ? null : 'Only numbers accepted';
       },
@@ -85,5 +92,18 @@ class _ProductPageState extends State<ProductPage> {
 
   _submit(){
     if(!formKey.currentState.validate()) return;
+    formKey.currentState.save();
+    productProvider.addProduct(product);
+
+  }
+
+  _available() {
+    return SwitchListTile.adaptive(
+      value: product.available,
+      title: Text('Available'),
+      onChanged: (value){setState(() {
+        product.available = value;
+      });},
+    );
   }
 }

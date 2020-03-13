@@ -15,7 +15,7 @@ class Product {
     this.id,
     this.name,
     this.price,
-    this.available,
+    this.available = false,
     this.imgUrl,
   });
 
