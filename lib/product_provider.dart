@@ -10,7 +10,15 @@ class ProductProvider{
     final url = '$_url/products.json';
     final res = await http.post(url, body: productToJson(product));
     final decoded = json.decode(res.body);
-    print(decoded);
+    //print(decoded);
+    return true;
+  }
+
+  Future<bool> editProduct(Product product) async {
+    final url = '$_url/products/${product.id}.json';
+    final res = await http.put(url, body: productToJson(product));
+    final decoded = json.decode(res.body);
+    //print(decoded);
     return true;
   }
 
@@ -25,7 +33,14 @@ class ProductProvider{
       tempProd.id = id;
       products.add(tempProd);
     });
-    print(products);
+    //print(products);
     return products;
+  }
+
+  Future<int> deleteProduct(String id) async {
+    final url = '$_url/products/$id.json';
+    final res = await http.delete(url);
+    //print(res.body);
+    return 1;
   }
 }

@@ -38,20 +38,7 @@ class HomePage extends StatelessWidget {
           return ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, i){
-                return Dismissible(
-                  key: UniqueKey(),
-                  background: Container(color: Colors.red,),
-                  onDismissed: (direction){
-
-                  },
-                  child: ListTile(
-                    title: Text('${products[i].name} - ${products[i].price}'),
-                    subtitle: Text(products[i].id),
-                    onTap: (){
-                      Navigator.pushNamed(context, 'product');
-                    },
-                  ),
-                );
+                return _buildItem(context, products[i]);
               });
         }else{
           return Center(child: CircularProgressIndicator());
@@ -59,4 +46,24 @@ class HomePage extends StatelessWidget {
       },
     );
   }
+
+  _buildItem(BuildContext context, Product product){
+    return Dismissible(
+      key: UniqueKey(),
+      background: Container(color: Colors.red,),
+      onDismissed: (direction){
+        print(product.id);
+        productProvider.deleteProduct(product.id);
+      },
+      child: ListTile(
+        title: Text('${product.name} - ${product.price}'),
+        subtitle: Text(product.id),
+        onTap: (){
+          Navigator.pushNamed(context, 'product', arguments: product);
+        },
+      ),
+    );
+  }
+
+
 }
