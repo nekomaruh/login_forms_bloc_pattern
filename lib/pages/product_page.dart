@@ -104,13 +104,18 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  void _submit(){
+  Future<void> _submit() async {
     if(!formKey.currentState.validate()) return;
     formKey.currentState.save();
 
     setState(() {
       _guardando = true;
     });
+
+
+    if(picture!=null){
+      product.imgUrl = await productProvider.uploadImage(picture);
+    }
 
     if(product.id == null){
       productProvider.addProduct(product);
@@ -148,13 +153,20 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _showPicture(){
     if(product.imgUrl!= null){
-      return Container();
-    }else{
-      return Image(
-        image: AssetImage(picture?.path ?? 'assets/no-image.png'),
-        height: 300,
+      return FadeInImage(
+        image: NetworkImage(product.imgUrl),
+        placeholder: AssetImage('assets/jar-loading.gif'),
         fit: BoxFit.cover,
       );
+    }else{
+      if(picture!=null){
+        return Image(
+          image: AssetImage(picture?.path ?? 'assets/no-image.png'),
+          height: 300,
+          fit: BoxFit.cover,
+        );
+      }
+      return Image.asset('assets/no-image.png');
     }
   }
 
@@ -169,7 +181,7 @@ class _ProductPageState extends State<ProductPage> {
   _processImage(ImageSource origin) async {
     picture =  await ImagePicker.pickImage(source: origin);
     if(picture!=null){
-
+      product.imgUrl = null;
     }
     setState(() {
 
