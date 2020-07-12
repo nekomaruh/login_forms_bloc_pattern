@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loginformsblocpattern/product_model.dart';
 import 'package:loginformsblocpattern/product_provider.dart';
 import 'package:loginformsblocpattern/utils.dart' as utils;
@@ -15,6 +18,7 @@ class _ProductPageState extends State<ProductPage> {
   Product product = new Product();
   final productProvider = new ProductProvider();
   bool _guardando = false;
+  File picture;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +35,11 @@ class _ProductPageState extends State<ProductPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.photo_size_select_actual),
-            onPressed: (){},
+            onPressed: _selectPicture,
           ),
           IconButton(
             icon: Icon(Icons.camera_alt),
-            onPressed: (){},
+            onPressed: _takePicture,
           )
         ],
       ),
@@ -47,6 +51,7 @@ class _ProductPageState extends State<ProductPage> {
               key: formKey,
               child: Column(
                 children: <Widget>[
+                  _showPicture(),
                   _name(),
                   _price(),
                   _available(),
@@ -139,5 +144,35 @@ class _ProductPageState extends State<ProductPage> {
         product.available = value;
       });},
     );
+  }
+
+  Widget _showPicture(){
+    if(product.imgUrl!= null){
+      return Container();
+    }else{
+      return Image(
+        image: AssetImage(picture?.path ?? 'assets/no-image.png'),
+        height: 300,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  Future<void> _selectPicture() async {
+    _processImage(ImageSource.gallery);
+  }
+
+  Future<void> _takePicture() async {
+    _processImage(ImageSource.camera);
+  }
+
+  _processImage(ImageSource origin) async {
+    picture =  await ImagePicker.pickImage(source: origin);
+    if(picture!=null){
+
+    }
+    setState(() {
+
+    });
   }
 }
