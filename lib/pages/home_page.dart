@@ -1,85 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:loginformsblocpattern/product_model.dart';
-import 'package:loginformsblocpattern/product_provider.dart';
-import '../provider.dart';
+import 'package:loginformsblocpattern/bloc/provider.dart';
+import 'package:loginformsblocpattern/models/producto_model.dart';
+import 'package:loginformsblocpattern/providers/productos_provider.dart';
 
 class HomePage extends StatelessWidget {
-
-  final productProvider = new ProductProvider();
-
+  
+  final productosProvider = new ProductosProvider();
+  
   @override
   Widget build(BuildContext context) {
+
     final bloc = Provider.of(context);
+    
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Home')
       ),
-      body: _showProducts(),
-      floatingActionButton: _button(context),
+      body: _crearListado(),
+      floatingActionButton: _crearBoton( context ),
     );
   }
 
-  _button(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      onPressed: (){
-        Navigator.pushNamed(context, 'product');
-      },
-    );
-  }
 
-  _showProducts() {
+  Widget _crearListado() {
+
     return FutureBuilder(
-      future: productProvider.loadProducts(),
-      builder: (BuildContext context, AsyncSnapshot<List<Product>> snap){
-        if(snap.hasData){
-          final products = snap.data;
+      future: productosProvider.cargarProductos(),
+      builder: (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
+        if ( snapshot.hasData ) {
+
+          final productos = snapshot.data;
+
           return ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, i){
-                return _buildItem(context, products[i]);
-              });
-        }else{
-          return Center(child: CircularProgressIndicator());
+            itemCount: productos.length,
+            itemBuilder: (context, i) => _crearItem(context, productos[i] ),
+          );
+
+        } else {
+          return Center( child: CircularProgressIndicator());
         }
       },
     );
   }
 
-  _buildItem(BuildContext context, Product product){
+  Widget _crearItem(BuildContext context, ProductoModel producto ) {
+
     return Dismissible(
       key: UniqueKey(),
-      background: Container(color: Colors.red,),
-      onDismissed: (direction){
-        print(product.id);
-        productProvider.deleteProduct(product.id);
+      background: Container(
+        color: Colors.red,
+      ),
+      onDismissed: ( direccion ){
+        productosProvider.borrarProducto(producto.id);
       },
       child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
           children: <Widget>[
-            product.imgUrl == null ? Image(
-              image: AssetImage('assets/no-image.png'),)
-                : FadeInImage(
-              image: NetworkImage(product.imgUrl),
-              placeholder: AssetImage('assets/jar-loading.gif'),
-              height: 300,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+
+            ( producto.fotoUrl == null ) 
+              ? Image(image: AssetImage('assets/no-image.png'))
+              : FadeInImage(
+                image: NetworkImage( producto.fotoUrl ),
+                placeholder: AssetImage('assets/jar-loading.gif'),
+                height: 300.0,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            
             ListTile(
-              title: Text('${product.name} - ${product.price}'),
-              subtitle: Text(product.id),
-              onTap: (){
-                Navigator.pushNamed(context, 'product', arguments: product);
-              },
+              title: Text('${ producto.titulo } - ${ producto.valor }'),
+              subtitle: Text( producto.id ),
+              onTap: () => Navigator.pushNamed(context, 'producto', arguments: producto ),
             ),
+
           ],
         ),
       )
     );
+
+
+    
+
   }
 
+
+  _crearBoton(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon( Icons.add ),
+      backgroundColor: Colors.deepPurple,
+      onPressed: ()=> Navigator.pushNamed(context, 'producto'),
+    );
+  }
 
 }
